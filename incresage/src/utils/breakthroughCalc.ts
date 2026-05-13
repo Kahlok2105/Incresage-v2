@@ -1,10 +1,10 @@
 import type { PlayerState } from "../types/state";
-import { getQiStage } from "./realmUtils";
+import { getQiStage, isFinalQiStage } from "./realmUtils";
 
 export const MIN_BREAKTHROUGH_FILL = 0.75;
 
 export function canAttemptQiBreakthrough(state: PlayerState): boolean {
-    return state.qi.fill >= MIN_BREAKTHROUGH_FILL     
+    return state.qi.fill >= MIN_BREAKTHROUGH_FILL && !isFinalQiStage(state.qi);
 }
 
 export function computeQiBreakthroughChance(state: PlayerState): number {

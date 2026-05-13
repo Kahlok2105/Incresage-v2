@@ -16,3 +16,39 @@ export function getQiRealmName(qi: QiState){
 export function getQiStageLabel(qi: QiState){
     return getQiStage(qi).label;
 }
+
+export function isFinalQiStage(qi: QiState){
+    const finalRealmIndex = QI_REALMS.length - 1;
+    const finalStageIndex = QI_REALMS[finalRealmIndex].stages.length - 1;
+
+    return qi.realmIndex === finalRealmIndex && qi.stage === finalStageIndex;
+}
+
+
+//We are encoding the rules
+//Asking the current realm, how many stages we have and 
+//Checking if we can go to the next stage, if not we stay in the current stage
+
+export function getNextQiPosition(qi: QiState){
+    if (isFinalQiStage(qi)){
+        return {
+            realmIndex: qi.realmIndex,
+            stage: qi.stage,
+        }
+    }
+
+    const currentRealm = getQiRealm(qi);
+    const isLastStageInRealm = qi.stage === currentRealm.stages.length - 1;
+
+    if (!isLastStageInRealm){
+        return {
+            realmIndex: qi.realmIndex,
+            stage: qi.stage + 1,
+        }
+    }
+
+    return {
+        realmIndex: qi.realmIndex + 1,
+        stage: 0,
+    }
+}
