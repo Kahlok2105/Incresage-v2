@@ -1,6 +1,7 @@
-import {QiPanel} from "./features/cultivation/QiPanel";
-import {BodyPanel} from "./features/cultivation/BodyPanel";
+import { QiPanel} from "./features/cultivation/QiPanel";
+import { BodyPanel} from "./features/cultivation/BodyPanel";
 import { useGameLoop } from "./hooks/useGameLoop";
+import { TechniquePanel } from "./features/cultivation/TechniquePanel";
 
 export default function App(){
   const {
@@ -8,6 +9,7 @@ export default function App(){
     attemptQiBreakthrough,
     attemptBodyBreakthrough, 
     trainBodyForTesting,
+    selectTechnique,
   } = useGameLoop();
 
   return (
@@ -26,5 +28,12 @@ export default function App(){
         onTrainForTesting = {trainBodyForTesting}
       />
     </div>
+
+      <TechniquePanel
+        state={state}
+        onSelectTechnique={selectTechnique}
+      />
+      
   </div>
+ 
 )}

@@ -10,7 +10,36 @@ function loadSavedState(): PlayerState {
     if (!saved) return INITIAL_PLAYER_STATE;
 
     try {
-        return JSON.parse(saved) as PlayerState;
+        const parsed = JSON.parse(saved) as PlayerState;
+
+        return {
+        ...INITIAL_PLAYER_STATE,
+        ...parsed,
+        qi: {
+            ...INITIAL_PLAYER_STATE.qi,
+            ...parsed.qi,
+        },
+        body: {
+            ...INITIAL_PLAYER_STATE.body,
+            ...parsed.body,
+        },
+        combat: {
+            ...INITIAL_PLAYER_STATE.combat,
+            ...parsed.combat,
+        },
+        life: {
+            ...INITIAL_PLAYER_STATE.life,
+            ...parsed.life,
+        },
+        legacy: {
+            ...INITIAL_PLAYER_STATE.legacy,
+            ...parsed.legacy,
+        },
+        systems: {
+            ...INITIAL_PLAYER_STATE.systems,
+            ...parsed.systems,
+        },
+        };
     }catch {
         return INITIAL_PLAYER_STATE;
     }

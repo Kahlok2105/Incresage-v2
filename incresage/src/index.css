@@ -57,3 +57,47 @@ button {
   display: grid;
   gap: 16px;
 }
+
+.panel button {
+  width: fit-content;
+  padding: 8px 12px;
+  border: 1px solid #6f7c4d;
+  background: #2b321f;
+  color: #f0ead6;
+  cursor: pointer;
+}
+
+.panel button:hover:not(:disabled) {
+  background: #384126;
+}
+
+.panel button:disabled {
+  color: #8c8a7c;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+.technique-list {
+  display: grid;
+  gap: 8px;
+}
+
+.technique-card {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+}
+
+.technique-card--active {
+  border-color: #b6cf6d;
+  background: #384126;
+}

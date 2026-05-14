@@ -1,7 +1,8 @@
 import type { InventoryItem } from './inventory';
 import type { Imprint, LifetimeStats, ReincarnationSummary } from './legacy';
-
+import type { Technique } from './technique';
 // States are split into multiple sub-objects so each hook owns a clean slice.
+
 export interface PlayerState {
   qi:      QiState;
   body:    BodyState;
@@ -16,6 +17,7 @@ export interface QiState {
   realmIndex:        number; // 0 to 5.
   stage:             number; // 0 = Early, 1 = Middle, 2 = Late.
   insight:           number; // Single mental stat.
+  techniques:        Technique[]; // Unlocked techniques.
   activeTechniqueId: string | null;
 }
 

@@ -1,5 +1,6 @@
 import type { PlayerState } from '../types/state';
 import { QI_REALMS } from './qiRealms';
+import { TECHNIQUES } from './techniques';
 
 const now = Date.now();
 
@@ -9,7 +10,8 @@ export const INITIAL_PLAYER_STATE: PlayerState = {
     realmIndex: 0,
     stage: 0,
     insight: 0,
-    activeTechniqueId: null,
+    techniques: TECHNIQUES.slice(0,3), // Start with the first 3 techniques unlocked
+    activeTechniqueId: TECHNIQUES[0].id, // Start with the first technique active
   },
   body: {
     fill: 0,
