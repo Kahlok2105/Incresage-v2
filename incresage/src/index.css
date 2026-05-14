@@ -133,3 +133,50 @@ button {
 .technique-card__progress .fill-bar__label {
   font-size: 12px;
 }
+
+.monster-list {
+  display: grid;
+  gap: 8px;
+}
+
+.monster-button {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #4b5538;
+  background: #1f2418;
+  color: #f0ead6;
+  text-align: left;
+  cursor: pointer;
+}
+
+.monster-button:hover {
+  background: #29301f;
+}
+
+.monster-button--selected {
+  border-color: #b6cf6d;
+  background: #323c24;
+}
+
+.monster-button small {
+  color: #c9c7b5;
+}
+
+.combat-target {
+  display: grid;
+  gap: 8px;
+}
+
+.combat-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.combat-stats span {
+  padding: 4px 8px;
+  border: 1px solid #4b5538;
+  background: #1f2418;
+}

@@ -2,6 +2,8 @@ import { QiPanel} from "./features/cultivation/QiPanel";
 import { BodyPanel} from "./features/cultivation/BodyPanel";
 import { useGameLoop } from "./hooks/useGameLoop";
 import { TechniquePanel } from "./features/cultivation/TechniquePanel";
+import { MonsterList } from "./features/combat/MonsterList";
+import { CombatTarget } from "./features/combat/CombatTarget";
 
 export default function App(){
   const {
@@ -10,6 +12,7 @@ export default function App(){
     attemptBodyBreakthrough, 
     trainBodyForTesting,
     selectTechnique,
+    selectMonster,
   } = useGameLoop();
 
   return (
@@ -33,7 +36,14 @@ export default function App(){
         state={state}
         onSelectTechnique={selectTechnique}
       />
-      
+      <CombatTarget
+        state={state}
+      />
+      <MonsterList
+        state={state}
+        onSelectMonster={selectMonster}
+      />
+
   </div>
  
 )}

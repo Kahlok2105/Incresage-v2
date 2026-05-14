@@ -28,6 +28,8 @@ export const INITIAL_PLAYER_STATE: PlayerState = {
     defensePower: 10,
     defeatedMonsters: [],
     equippedItems: [],
+    selectedMonsterId: null,
+    monsterHp: 0,
   },
   life: {
     lifespanFill: 0,
