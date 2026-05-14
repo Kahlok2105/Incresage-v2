@@ -2,6 +2,7 @@ import type { Technique } from '../../types/technique';
 import type { PlayerState } from '../../types/state';
 import { techExpToNextLevel } from '../../constants/techniques';
 import { getTechniqueEffectText } from '../../utils/techniqueUtils';
+import { FillBar } from '../../components/FillBar';
 
 interface TechniquePanelProps {
   state: PlayerState;
@@ -35,7 +36,7 @@ interface TechniqueCardProps {
 
 function TechniqueCard({ technique, isActive, onSelect }: TechniqueCardProps) {
   const expNeeded = techExpToNextLevel(technique.level);
-  const expPercent = Math.round((technique.exp / expNeeded) * 100);
+  const expRatio = technique.exp / expNeeded;
 
   return (
     <button
@@ -45,8 +46,9 @@ function TechniqueCard({ technique, isActive, onSelect }: TechniqueCardProps) {
     >
       <strong>{technique.name}</strong>
       <span>Level {technique.level}</span>
-      <span>EXP {technique.exp} / {expNeeded}</span>
-      <span>{expPercent}%</span>
+      <div className = "technique-card__progress">
+         <FillBar value={expRatio} />
+         </div>
       <small>{getTechniqueEffectText(technique).join(', ')}</small>
     </button>
   );

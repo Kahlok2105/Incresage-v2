@@ -58,7 +58,7 @@ button {
   gap: 16px;
 }
 
-.panel button {
+.action-row button {
   width: fit-content;
   padding: 8px 12px;
   border: 1px solid #6f7c4d;
@@ -67,11 +67,11 @@ button {
   cursor: pointer;
 }
 
-.panel button:hover:not(:disabled) {
+.action-row button:hover:not(:disabled) {
   background: #384126;
 }
 
-.panel button:disabled {
+.action-row button:disabled {
   color: #8c8a7c;
   cursor: not-allowed;
   opacity: 0.65;
@@ -86,18 +86,50 @@ button {
 
 .technique-list {
   display: grid;
-  gap: 8px;
+  gap: 12px;
+  grid-auto-rows: 1fr;
 }
 
 .technique-card {
   display: grid;
-  gap: 6px;
+  align-content: start;
+  gap: 10px;
   width: 100%;
-  padding: 12px;
+  min-height: 150px;
+  padding: 14px;
+  border: 1px solid #4b5538;
+  background: #1f2418;
+  color: #f0ead6;
   text-align: left;
+}
+
+.technique-card:hover {
+  background: #29301f;
 }
 
 .technique-card--active {
   border-color: #b6cf6d;
-  background: #384126;
+  background: #323c24;
+}
+
+.technique-card strong {
+  font-size: 16px;
+}
+
+.technique-card small {
+  color: #c9c7b5;
+  line-height: 1.4;
+}
+
+.technique-card__progress {
+  display: grid;
+  gap: 6px;
+}
+
+.technique-card__progress .fill-bar {
+  height: 16px;
+}
+
+.technique-card__progress .fill-bar__label {
+  font-size: 12px;
 }
