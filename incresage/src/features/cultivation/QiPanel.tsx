@@ -14,7 +14,8 @@ interface QiPanelProps {
 export function QiPanel({ state, onAttemptBreakthrough }: QiPanelProps) {
     const chance = Math.round(computeQiBreakthroughChance(state) * 100);
     const canAttempt = canAttemptQiBreakthrough(state);
-const buttonLabel = canAttempt ? 'Attempt Breakthrough' : 'Requires 75% Qi';
+    const buttonLabel = canAttempt ? 'Attempt Breakthrough' : 'Requires 75% Qi';
+   
     return (
             <section className="panel">
                 <h2>Qi Cultivation</h2>
