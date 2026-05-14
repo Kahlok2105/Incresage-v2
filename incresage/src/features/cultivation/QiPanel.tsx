@@ -28,11 +28,14 @@ export function QiPanel({ state, onAttemptBreakthrough }: QiPanelProps) {
 
                 <p>Breakthrough chance: {chance}%</p>
                 <p>Body Sparks: {state.body.sparks}</p>
-                <button 
-                onClick={onAttemptBreakthrough} 
-                disabled={!canAttempt}>
-                    {buttonLabel}
-                </button>
+                <div className="action-row">
+                    <button
+                        onClick={onAttemptBreakthrough}
+                        disabled={!canAttempt}
+                    >
+                        {buttonLabel}
+                    </button>
+                    </div>
 
             </section>
     )

@@ -110,7 +110,7 @@ export function useBreakthrough(
             };
         });
     }
-
+    // Temporary function to test Body breakthrough mechanics without needing to fill up Body through gameplay
     function trainBodyForTesting() {
     setState((previous) => {
         return {

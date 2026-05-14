@@ -34,20 +34,22 @@ export function BodyPanel({ state, onAttemptBreakthrough, onTrainForTesting }: B
       <p>Body Sparks: {state.body.sparks}</p>
     
 
-      <button
-        type="button"
-        onClick={onTrainForTesting}
-      >
-        Temper Body
-      </button>
+        <div className="action-row">
+        <button
+            type="button"
+            onClick={onTrainForTesting}
+        >
+            Temper Body (Test)
+        </button>
 
-      <button
-        type="button"
-        disabled={!canAttempt}
-        onClick={onAttemptBreakthrough}
-      >
-        {buttonLabel}
-      </button>
+        <button
+            type="button"
+            disabled={!canAttempt}
+            onClick={onAttemptBreakthrough}
+        >
+            {buttonLabel}
+        </button>
+        </div>
     </section>
   );
 }
