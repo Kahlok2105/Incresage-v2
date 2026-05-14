@@ -1,5 +1,6 @@
 import { QI_REALMS } from "../constants/qiRealms";
-import type { QiState } from "../types/state";
+import type { BodyState, QiState } from "../types/state";
+import { BODY_REALMS } from "../constants/bodyRealms";
 
 export function getQiRealm(qi: QiState){
     return QI_REALMS[qi.realmIndex];
@@ -51,4 +52,53 @@ export function getNextQiPosition(qi: QiState){
         realmIndex: qi.realmIndex + 1,
         stage: 0,
     }
+}
+
+// Similar functions for Body Realms
+
+export function getBodyRealm(body: BodyState) {
+  return BODY_REALMS[body.realmIndex];
+}
+
+export function getBodyStage(body: BodyState) {
+  return getBodyRealm(body).stages[body.stage];
+}
+
+export function getBodyRealmName(body: BodyState) {
+  return getBodyRealm(body).name;
+}
+
+export function getBodyStageLabel(body: BodyState) {
+  return getBodyStage(body).label;
+}
+
+export function isFinalBodyStage(body: BodyState) {
+  const finalRealmIndex = BODY_REALMS.length - 1;
+  const finalStageIndex = BODY_REALMS[finalRealmIndex].stages.length - 1;
+
+  return body.realmIndex === finalRealmIndex && body.stage === finalStageIndex;
+}
+
+export function getNextBodyPosition(body: BodyState) {
+  if (isFinalBodyStage(body)) {
+    return {
+      realmIndex: body.realmIndex,
+      stage: body.stage,
+    };
+  }
+
+  const currentRealm = getBodyRealm(body);
+  const isLastStageInRealm = body.stage === currentRealm.stages.length - 1;
+
+  if (!isLastStageInRealm) {
+    return {
+      realmIndex: body.realmIndex,
+      stage: body.stage + 1,
+    };
+  }
+
+  return {
+    realmIndex: body.realmIndex + 1,
+    stage: 0,
+  };
 }

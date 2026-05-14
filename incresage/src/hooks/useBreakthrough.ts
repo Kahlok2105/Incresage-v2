@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction} from "react";
 import type {  PlayerState } from "../types/state";
-import {canAttemptQiBreakthrough, computeQiBreakthroughChance } from "../utils/breakthroughCalc";
-import { getNextQiPosition } from "../utils/realmUtils";
+import {canAttemptQiBreakthrough, computeQiBreakthroughChance, canAttemptBodyBreakthrough, computeBodyBreakthroughChance, getBodyTrialCost } from "../utils/breakthroughCalc";
+import { getNextBodyPosition, getNextQiPosition } from "../utils/realmUtils";
 
 
 export function useBreakthrough(
@@ -60,7 +60,75 @@ export function useBreakthrough(
         });
     }
 
-            return{
-                attemptQiBreakthrough
+    function attemptBodyBreakthrough() {
+        if (!canAttemptBodyBreakthrough(state)) return;
+
+        setState((previous) => {
+            if (!canAttemptBodyBreakthrough(previous)) return previous;
+
+            const chance = computeBodyBreakthroughChance(previous);
+            const success = Math.random() <= chance;
+
+            if (!success) {
+            return {
+                ...previous,
+                body: {
+                ...previous.body,
+                fill: previous.body.fill * 0.6,
+                trials: Math.max(0, previous.body.trials - 1),
+                },
+            };
             }
+
+            const nextBodyPosition = getNextBodyPosition(previous.body);
+            const trialCost = getBodyTrialCost(previous);
+
+            return {
+            ...previous,
+            qi: {
+                ...previous.qi,
+                fill: Math.min(1, previous.qi.fill + 0.15),
+            },
+            body: {
+                ...previous.body,
+                ...nextBodyPosition,
+                fill: 0,
+                trials: previous.body.trials - trialCost,
+                sparks: previous.body.sparks - 1,
+            },
+            life: {
+                ...previous.life,
+                lifetimeStats: {
+                ...previous.life.lifetimeStats,
+                highestBodyRealm: Math.max(
+                    previous.life.lifetimeStats.highestBodyRealm,
+                    nextBodyPosition.realmIndex,
+                ),
+                breakthroughsTaken: previous.life.lifetimeStats.breakthroughsTaken + 1,
+                },
+            },
+            };
+        });
     }
+
+    function trainBodyForTesting() {
+    setState((previous) => {
+        return {
+        ...previous,
+        body: {
+            ...previous.body,
+            fill: Math.min(1, previous.body.fill + 0.15),
+            trials: Math.min(previous.body.trialsMax, previous.body.trials + 1),
+        },
+        };
+    });
+    }
+
+    return{
+        trainBodyForTesting,
+        attemptQiBreakthrough,
+        attemptBodyBreakthrough,
+    }
+
+}
+
