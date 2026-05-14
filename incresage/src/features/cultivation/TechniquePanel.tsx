@@ -1,6 +1,7 @@
 import type { Technique } from '../../types/technique';
 import type { PlayerState } from '../../types/state';
 import { techExpToNextLevel } from '../../constants/techniques';
+import { getTechniqueEffectText } from '../../utils/techniqueUtils';
 
 interface TechniquePanelProps {
   state: PlayerState;
@@ -46,7 +47,7 @@ function TechniqueCard({ technique, isActive, onSelect }: TechniqueCardProps) {
       <span>Level {technique.level}</span>
       <span>EXP {technique.exp} / {expNeeded}</span>
       <span>{expPercent}%</span>
-      <small>{technique.traits.join(', ')}</small>
+      <small>{getTechniqueEffectText(technique).join(', ')}</small>
     </button>
   );
 }

@@ -42,3 +42,39 @@ export function addTechniqueExp(technique: Technique, expGained: number): Techni
     }
     return nextTechnique;
 }
+
+// export function getTraitLabel(trait: TechniqueTrait): string {
+//   switch (trait) {
+//     case 'qi_focus':
+//       return 'Qi Focus';
+//     case 'body_resilience':
+//       return 'Body Resilience';
+//     case 'insight_deep':
+//       return 'Deep Insight';
+//     case 'combat_edge':
+//       return 'Combat Edge';
+//     case 'lifespan_extend':
+//       return 'Lifespan Extension';
+//     case 'magicfind_rate':
+//       return 'Treasure Sense';
+//   }
+// }
+
+export function getTechniqueEffectText(technique: Technique): string[] {
+  return technique.traits.map((trait) => {
+    switch (trait) {
+      case 'qi_focus':
+        return `Qi speed +${technique.level * 2}%`;
+      case 'insight_deep':
+        return `Insight +${(0.05 * technique.level).toFixed(2)}/s`;
+      case 'body_resilience':
+        return 'Body failure penalty reduced';
+      case 'combat_edge':
+        return 'Combat stats increased';
+      case 'lifespan_extend':
+        return 'Lifespan lasts longer';
+      case 'magicfind_rate':
+        return 'Improved item discovery';
+    }
+  });
+}

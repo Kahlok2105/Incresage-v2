@@ -3,6 +3,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { PlayerState } from '../types/state';
 import { computeQiFillRate } from '../utils/fillRate';
 import { addTechniqueExp } from '../utils/techniqueUtils';
+import { computeInsightGainPerTick, getInsightCap } from '../utils/insightUtils';
 
 const TICK_MS = 1000;
 
@@ -22,12 +23,17 @@ export function useGameTick(setState: Dispatch<SetStateAction<PlayerState>>) {
           return addTechniqueExp(technique, 1); // Gain 1 exp per tick for the active technique
         });
 
+        const nextInsight = Math.min(
+          getInsightCap(previous),
+          previous.qi.insight + computeInsightGainPerTick(previous),
+        )
         return {
           ...previous,
           qi: {
             ...previous.qi,
             fill: nextFill,
             techniques: nextTechniques,
+            insight: nextInsight,
           },
         };
       });
