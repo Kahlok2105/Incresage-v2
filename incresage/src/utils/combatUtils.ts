@@ -1,5 +1,7 @@
 import { MONSTERS } from "../constants/monsters";
 import type { PlayerState } from "../types/state";
+import type { BattleTechnique } from '../types/technique';
+import { getBattleTechniqueBonus } from './upgradeUtils';
 
 export function getSelectedMonster (state: PlayerState) {
     if(!state.combat.selectedMonsterId) return null;
@@ -15,12 +17,30 @@ export function getAvailableMonsters(state: PlayerState) {
     )
 }
 
-export function getVitalityCap(state: PlayerState): number{
-    return (state.qi.realmIndex + 1) * (state.body.realmIndex + 1) * 20;
+export function getVitalityCap(state: PlayerState): number {
+  const vitalityTechnique = getBattleTechniqueByTrait(
+    state.body.battleTechniques,
+    'vitality',
+  );
+
+  const techniqueBonus = vitalityTechnique
+    ? getBattleTechniqueBonus(vitalityTechnique) * 15
+    : 0;
+
+  return (state.qi.realmIndex + 1) * (state.body.realmIndex + 1) * 20 + techniqueBonus;
 }
 
 export function getSpiritCap(state: PlayerState): number {
-  return 50 + state.qi.realmIndex * 25;
+  const spiritTechnique = getBattleTechniqueByTrait(
+    state.body.battleTechniques,
+    'spirit',
+  );
+
+  const techniqueBonus = spiritTechnique
+    ? getBattleTechniqueBonus(spiritTechnique) * 15
+    : 0;
+
+  return 50 + state.qi.realmIndex * 25 + techniqueBonus;
 }
 
 export function getCurrentVitality(state: PlayerState): number {
@@ -46,4 +66,33 @@ export function addCombatLog(
   maxEntries = 50,
 ): string[] {
   return [`[${formatLogTime(new Date())}] ${message}`, ...currentLog].slice(0, maxEntries);
+}
+
+function getBattleTechniqueByTrait(
+  techniques: BattleTechnique[],
+  trait: BattleTechnique['trait'],
+): BattleTechnique | undefined {
+  return techniques.find((technique) => technique.trait === trait);
+}
+
+export function getAttackPower(state: PlayerState): number {
+  const attackTechnique = getBattleTechniqueByTrait(
+    state.body.battleTechniques,
+    'attack',
+  );
+
+  return state.combat.attackPower + (
+    attackTechnique ? getBattleTechniqueBonus(attackTechnique) : 0
+  );
+}
+
+export function getDefensePower(state: PlayerState): number {
+  const defenseTechnique = getBattleTechniqueByTrait(
+    state.body.battleTechniques,
+    'defense',
+  );
+
+  return state.combat.defensePower + (
+    defenseTechnique ? getBattleTechniqueBonus(defenseTechnique) : 0
+  );
 }

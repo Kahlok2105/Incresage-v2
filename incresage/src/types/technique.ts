@@ -24,6 +24,6 @@ export interface BattleTechnique {
   id:        string;
   name:      string;
   trait:     'attack' | 'defense' | 'vitality' | 'spirit';
-  tier:      number;      // 1 to 5
+  tier:      number;      //  // 0 to 5; 0 means not learned yet
   tierCosts: number[];    // cumulative spirit stone cost per tier, e.g. [10, 30, 70, 150, 300]
 }

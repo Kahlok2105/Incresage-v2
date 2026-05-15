@@ -218,3 +218,53 @@ button {
   font-size: 13px;
   line-height: 1.4;
 }
+
+.battle-tech-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.battle-tech-card {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid #4b5538;
+  background: #1f2418;
+  color: #f0ead6;
+}
+
+.battle-tech-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.battle-tech-card p {
+  margin: 0;
+  color: #d7d2bd;
+  line-height: 1.4;
+}
+
+.battle-tech-card .tech-maxed {
+  color: #9fbb58;
+  font-weight: 700;
+}
+
+.battle-tech-card button {
+  width: fit-content;
+  padding: 10px 14px;
+  border: 1px solid #6f7c4d;
+  background: #2b321f;
+  color: #f0ead6;
+  cursor: pointer;
+}
+
+.battle-tech-card button:hover:not(:disabled) {
+  background: #384126;
+}
+
+.battle-tech-card button:disabled {
+  color: #8c8a7c;
+  cursor: not-allowed;
+  opacity: 0.65;
+}

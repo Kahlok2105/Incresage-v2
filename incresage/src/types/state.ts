@@ -1,6 +1,8 @@
 import type { InventoryItem } from './inventory';
 import type { Imprint, LifetimeStats, ReincarnationSummary } from './legacy';
 import type { Technique } from './technique';
+import type { BattleTechnique } from './technique';
+
 // States are split into multiple sub-objects so each hook owns a clean slice.
 
 export interface PlayerState {
@@ -28,6 +30,7 @@ export interface BodyState {
   trials:    number;
   trialsMax: number;
   sparks:    number;
+  battleTechniques: BattleTechnique[]; // Unlocked battle techniques. Tier 0 means not learned yet.
 }
 
 export interface CombatStats {

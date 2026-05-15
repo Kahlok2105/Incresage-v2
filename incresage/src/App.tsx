@@ -6,6 +6,7 @@ import { MonsterList } from "./features/combat/MonsterList";
 import { CombatTarget } from "./features/combat/CombatTarget";
 import { PlayerPanel } from "./features/player/PlayerPanel";
 import { CombatLog } from "./features/combat/CombatLog";
+import { BattleTechPanel } from "./features/upgrades/BattleTechPanel";
 
 export default function App(){
   const {
@@ -14,6 +15,7 @@ export default function App(){
     attemptBodyBreakthrough, 
     selectTechnique,
     selectMonster,
+    upgradeBattleTechnique
   } = useGameLoop();
 
   return (
@@ -36,6 +38,12 @@ export default function App(){
         state={state}
         onSelectTechnique={selectTechnique}
       />
+
+      <BattleTechPanel
+        state={state}
+        onUpgradeBattleTechnique={upgradeBattleTechnique}
+      />
+      
       <CombatTarget state={state}/>
       <CombatLog state={state} />
       <MonsterList

@@ -1,6 +1,7 @@
 import type { PlayerState } from '../types/state';
 import { QI_REALMS } from './qiRealms';
 import { TECHNIQUES } from './techniques';
+import { BATTLE_TECHNIQUES } from './battleTech';
 
 const now = Date.now();
 
@@ -20,6 +21,7 @@ export const INITIAL_PLAYER_STATE: PlayerState = {
     trials: 0,
     trialsMax: 8,
     sparks: 0,
+    battleTechniques: BATTLE_TECHNIQUES, // Start with all battle techniques at tier 0
   },
   combat: {
     vitalityFill: 1,

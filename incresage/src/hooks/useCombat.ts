@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useEffect } from 'react';
 import { MONSTERS } from '../constants/monsters';
 import type { PlayerState } from '../types/state';
-import { addCombatLog, getSelectedMonster, getVitalityCap } from '../utils/combatUtils';
+import { addCombatLog, getAttackPower, getDefensePower, getSelectedMonster, getVitalityCap } from '../utils/combatUtils';
 
 
 const COMBAT_TICK_MS = 2000;
@@ -53,10 +53,10 @@ export function useCombat(
         };  
       }
 
-      const playerDamage = previous.combat.attackPower;
+      const playerDamage = getAttackPower(previous); 
       const monsterDamage = Math.max(
         1,
-        monster.attack - previous.combat.defensePower,
+       monster.attack - getDefensePower(previous),
       );
 
       const nextMonsterHp = previous.combat.monsterHp - playerDamage;
