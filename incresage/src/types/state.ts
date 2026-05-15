@@ -39,6 +39,7 @@ export interface CombatStats {
   equippedItems:    string[];
   selectedMonsterId: string | null;
   monsterHp: number;
+  combatLog: string[];
 }
 
 export interface LifeState {

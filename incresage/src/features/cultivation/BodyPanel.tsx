@@ -10,10 +10,9 @@ import { getBodyRealmName, getBodyStageLabel } from '../../utils/realmUtils';
 interface BodyPanelProps {
   state: PlayerState;
   onAttemptBreakthrough: () => void;
-  onTrainForTesting: () => void;
 }
 
-export function BodyPanel({ state, onAttemptBreakthrough, onTrainForTesting }: BodyPanelProps) {
+export function BodyPanel({ state, onAttemptBreakthrough }: BodyPanelProps) {
   const chance = Math.round(computeBodyBreakthroughChance(state) * 100);
   const trialCost = getBodyTrialCost(state);
   const canAttempt = canAttemptBodyBreakthrough(state);
@@ -35,13 +34,6 @@ export function BodyPanel({ state, onAttemptBreakthrough, onTrainForTesting }: B
     
 
         <div className="action-row">
-        <button
-            type="button"
-            onClick={onTrainForTesting}
-        >
-            Temper Body (Test)
-        </button>
-
         <button
             type="button"
             disabled={!canAttempt}

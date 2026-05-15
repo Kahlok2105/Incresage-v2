@@ -30,6 +30,7 @@ export const INITIAL_PLAYER_STATE: PlayerState = {
     equippedItems: [],
     selectedMonsterId: null,
     monsterHp: 0,
+    combatLog: [],  
   },
   life: {
     lifespanFill: 0,

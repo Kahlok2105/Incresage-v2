@@ -4,13 +4,14 @@ import { useGameLoop } from "./hooks/useGameLoop";
 import { TechniquePanel } from "./features/cultivation/TechniquePanel";
 import { MonsterList } from "./features/combat/MonsterList";
 import { CombatTarget } from "./features/combat/CombatTarget";
+import { PlayerPanel } from "./features/player/PlayerPanel";
+import { CombatLog } from "./features/combat/CombatLog";
 
 export default function App(){
   const {
     state, 
     attemptQiBreakthrough,
     attemptBodyBreakthrough, 
-    trainBodyForTesting,
     selectTechnique,
     selectMonster,
   } = useGameLoop();
@@ -18,7 +19,7 @@ export default function App(){
   return (
   <div className="app">
     <h1>Incresage</h1>
-
+    <PlayerPanel state={state} />
     <div className="cultivation-grid">
       <QiPanel
         state={state}
@@ -28,17 +29,15 @@ export default function App(){
       <BodyPanel
         state={state}
         onAttemptBreakthrough={attemptBodyBreakthrough}
-        onTrainForTesting = {trainBodyForTesting}
       />
-    </div>
+      </div>
 
       <TechniquePanel
         state={state}
         onSelectTechnique={selectTechnique}
       />
-      <CombatTarget
-        state={state}
-      />
+      <CombatTarget state={state}/>
+      <CombatLog state={state} />
       <MonsterList
         state={state}
         onSelectMonster={selectMonster}

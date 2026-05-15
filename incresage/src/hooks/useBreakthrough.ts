@@ -110,22 +110,8 @@ export function useBreakthrough(
             };
         });
     }
-    // Temporary function to test Body breakthrough mechanics without needing to fill up Body through gameplay
-    function trainBodyForTesting() {
-    setState((previous) => {
-        return {
-        ...previous,
-        body: {
-            ...previous.body,
-            fill: Math.min(1, previous.body.fill + 0.15),
-            trials: Math.min(previous.body.trialsMax, previous.body.trials + 1),
-        },
-        };
-    });
-    }
-
+    
     return{
-        trainBodyForTesting,
         attemptQiBreakthrough,
         attemptBodyBreakthrough,
     }

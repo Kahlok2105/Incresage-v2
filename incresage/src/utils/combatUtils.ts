@@ -30,3 +30,20 @@ export function getCurrentVitality(state: PlayerState): number {
 export function getCurrentSpirit(state: PlayerState): number {
   return Math.round(state.combat.spiritFill * getSpiritCap(state));
 }
+
+function formatLogTime(date: Date): string {
+  return date.toLocaleTimeString('en-SG', {
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+}
+
+export function addCombatLog(
+  currentLog: string[],
+  message: string,
+  maxEntries = 50,
+): string[] {
+  return [`[${formatLogTime(new Date())}] ${message}`, ...currentLog].slice(0, maxEntries);
+}

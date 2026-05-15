@@ -43,8 +43,12 @@ function MonsterButton({ monster, isSelected, onSelect }: MonsterButtonProps) {
     >
       <strong>{monster.name}</strong>
       <span>Difficulty {monster.difficulty}</span>
-      <small>
-        HP {monster.hp} - Attack {monster.attack} - Body +{Math.round(monster.fillReward * 100)}%
+      <small className="monster-rewards">
+        <span><strong>HP</strong> {monster.hp}</span>
+        <span><strong>Attack</strong> {monster.attack}</span>
+        <span><strong>Body EXP</strong> +{Math.round(monster.fillReward * 100)}%</span>
+        <span><strong>First Win</strong> +{monster.trialsReward} Trials</span>
+        <span><strong>Spirit Stones</strong> +{monster.spiritStones}</span>
       </small>
     </button>
   );

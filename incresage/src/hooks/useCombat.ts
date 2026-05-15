@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useEffect } from 'react';
 import { MONSTERS } from '../constants/monsters';
 import type { PlayerState } from '../types/state';
-import { getSelectedMonster, getVitalityCap } from '../utils/combatUtils';
+import { addCombatLog, getSelectedMonster, getVitalityCap } from '../utils/combatUtils';
 
 
 const COMBAT_TICK_MS = 2000;
@@ -25,6 +25,10 @@ export function useCombat(
           ...previous.combat,
           selectedMonsterId: monster.id,
           monsterHp: monster.hp,
+          combatLog: addCombatLog(
+            previous.combat.combatLog,
+            `${monster.name} selected! Prepare for battle!`,
+          ),
         },
       };
     });
@@ -60,6 +64,8 @@ export function useCombat(
       const vitalityDamageRatio = monsterDamage / vitalityCap;
       const nextVitalityFill = previous.combat.vitalityFill - vitalityDamageRatio;
 
+      // Check for combat outcomes: monster defeat or player defeat
+      // Monster defeat scenario
       if (nextMonsterHp <= 0) {
         const alreadyDefeated = previous.combat.defeatedMonsters.includes(monster.id);
         const trialsReward = alreadyDefeated ? 0 : monster.trialsReward;
@@ -79,6 +85,12 @@ export function useCombat(
             monsterHp: monster.hp,
             defeatedMonsters: alreadyDefeated ? previous.combat.defeatedMonsters 
                 : [...previous.combat.defeatedMonsters, monster.id],
+            combatLog: addCombatLog(
+              previous.combat.combatLog,
+              alreadyDefeated
+                  ? `Defeated ${monster.name}. Gained ${monster.spiritStones} spirit stones.`
+                  : `First defeat: ${monster.name}. Gained ${monster.trialsReward} trials and ${monster.spiritStones} spirit stones.`,
+              ),
           },
           systems:{
             ...previous.systems,
@@ -94,6 +106,7 @@ export function useCombat(
         };
       }
 
+      // Player defeat scenario
       if (nextVitalityFill <= 0) {
         return {
           ...previous,
@@ -102,6 +115,10 @@ export function useCombat(
             vitalityFill: 0,
             selectedMonsterId: null,
             monsterHp: 0,
+            combatLog: addCombatLog(
+              previous.combat.combatLog,
+              `Defeated by ${monster.name}. Recovery in progress...`,
+            ),
           },
         };
       }
