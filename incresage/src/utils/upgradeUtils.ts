@@ -43,3 +43,10 @@ export function getBattleTechniqueEffectText(technique: BattleTechnique): string
       return `Spirit cap +${bonus * 15}`;
   }
 }
+
+export function getBattleTechniqueEffectTextAtTier(
+  technique: BattleTechnique,
+  tier: number,
+): String{
+  return getBattleTechniqueEffectText({ ...technique, tier });
+}

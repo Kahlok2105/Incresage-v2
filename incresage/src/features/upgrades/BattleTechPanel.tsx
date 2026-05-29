@@ -1,5 +1,5 @@
 import type { PlayerState } from '../../types/state';
-import { getBattleTechniqueEffectText, getNextTierCost } from '../../utils/upgradeUtils';
+import { getBattleTechniqueEffectTextAtTier, getBattleTechniqueEffectText, getNextTierCost } from '../../utils/upgradeUtils';
 
 interface BattleTechPanelProps {
   state: PlayerState;
@@ -24,27 +24,45 @@ export function BattleTechPanel({
           const isMaxed = nextTierCost === null;
           const isLocked = !isMaxed && !hasRealmAccess;
 
+          const nextEffectText = isMaxed
+            ? null
+            : getBattleTechniqueEffectTextAtTier(technique, nextTier);
+
+          const buttonLabel = isMaxed
+            ? 'Maxed'
+            : isLocked
+              ? `Requires Body Realm ${requiredRealmIndex + 1}`
+              : !canAfford
+                ? `Need ${nextTierCost} Stones`
+                : `Upgrade to Tier ${nextTier}`;
+
           return (
             <div key={technique.id} className="battle-tech-card">
-              <h3>{technique.name}</h3>
-              <p>{getBattleTechniqueEffectText(technique)}</p>
-              <p>Tier: {technique.tier} / 5</p>
+              <div className="battle-tech-card__header">
+                <h3>{technique.name}</h3>
+                <span>Tier {technique.tier} / 5</span>
+              </div>
 
-              {isMaxed ? (
-                <p className="tech-maxed">MAXED</p>
-              ) : (
-                <p>
-                  Next tier cost: {nextTierCost} spirit stones
-                  {isLocked ? ` (requires Body Realm ${requiredRealmIndex + 1})` : ''}
-                </p>
-              )}
+              <div className="battle-tech-card__details">
+                <p>Current: {getBattleTechniqueEffectText(technique)}</p>
+
+                {nextEffectText ? (
+                  <p>Next: {nextEffectText}</p>
+                ) : (
+                  <p className="tech-maxed">Maximum tier reached</p>
+                )}
+
+                {!isMaxed && (
+                  <p>Cost: {nextTierCost} spirit stones</p>
+                )}
+              </div>
 
               <button
                 type="button"
                 disabled={isMaxed || !canAfford || isLocked}
                 onClick={() => onUpgradeBattleTechnique(technique.id)}
               >
-                {isMaxed ? 'MAX' : isLocked ? 'Locked' : `Upgrade to Tier ${nextTier}`}
+                {buttonLabel}
               </button>
             </div>
           );

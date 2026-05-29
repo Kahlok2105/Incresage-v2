@@ -268,3 +268,19 @@ button {
   cursor: not-allowed;
   opacity: 0.65;
 }
+
+.battle-tech-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.battle-tech-card__header span {
+  color: #b6cf6d;
+  font-size: 0.9rem;
+}
+
+.battle-tech-card__details {
+  display: grid;
+  gap: 6px;
+}
