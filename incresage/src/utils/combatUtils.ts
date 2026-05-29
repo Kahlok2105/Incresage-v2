@@ -2,6 +2,7 @@ import { MONSTERS } from "../constants/monsters";
 import type { PlayerState } from "../types/state";
 import type { BattleTechnique } from '../types/technique';
 import { getBattleTechniqueBonus } from './upgradeUtils';
+import { getItemTemplate } from "../constants/items";
 
 export function getSelectedMonster (state: PlayerState) {
     if(!state.combat.selectedMonsterId) return null;
@@ -76,23 +77,43 @@ function getBattleTechniqueByTrait(
 }
 
 export function getAttackPower(state: PlayerState): number {
+    
+  const gearAttackBonus = getEquippedGearBonuses(state).reduce(
+    (total, bonus) => total + (bonus.attackPower ?? 0),
+    0,
+  );
+
   const attackTechnique = getBattleTechniqueByTrait(
     state.body.battleTechniques,
     'attack',
   );
 
-  return state.combat.attackPower + (
+  return state.combat.attackPower + gearAttackBonus + (
     attackTechnique ? getBattleTechniqueBonus(attackTechnique) : 0
   );
 }
 
 export function getDefensePower(state: PlayerState): number {
+    const gearDefenseBonus = getEquippedGearBonuses(state).reduce(
+    (total, bonus) => total + (bonus.defensePower ?? 0),
+    0,
+  );
+
   const defenseTechnique = getBattleTechniqueByTrait(
     state.body.battleTechniques,
     'defense',
   );
 
-  return state.combat.defensePower + (
+  return state.combat.defensePower + gearDefenseBonus +(
     defenseTechnique ? getBattleTechniqueBonus(defenseTechnique) : 0
   );
+}
+
+// This function calculates the total stat bonuses from equipped gear items
+function getEquippedGearBonuses(state: PlayerState) {
+  
+  return state.systems.inventory
+    .filter((item) => item.isEquipped)
+    .map((item) => getItemTemplate(item.templateId)?.statBonus)
+    .filter((bonus) => bonus !== undefined);
 }

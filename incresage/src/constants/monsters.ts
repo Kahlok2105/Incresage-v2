@@ -15,6 +15,12 @@ export interface MonsterDef {
   trialsReward: number;   // one-time trial reward on first defeat
   spiritStones: number;   // spirit stones earned per victory
   unlockRealmIndex: number; // minimum Qi realmIndex before this monster appears
+  drops: MonsterDrop[];
+}
+
+export interface MonsterDrop {
+  templateId: string;
+  chance: number;
 }
 
 export const MONSTERS: MonsterDef[] = [
@@ -29,6 +35,10 @@ export const MONSTERS: MonsterDef[] = [
     trialsReward:     1,
     spiritStones:     5,
     unlockRealmIndex: 1,   // available from Qi Condensation onward
+    drops: [
+      { templateId: 'rusty_sword', chance: 0.2 },
+      { templateId: 'woven_guard_charm', chance: 0.2 },
+    ],
   },
   {
     id:               'forest_wolf',
@@ -41,6 +51,9 @@ export const MONSTERS: MonsterDef[] = [
     trialsReward:     1,
     spiritStones:     8,
     unlockRealmIndex: 1,
+    drops: [
+      { templateId: 'wolf_fang_blade', chance: 0.15 },
+    ],
   },
   {
     id:               'earth_golem',
@@ -53,6 +66,10 @@ export const MONSTERS: MonsterDef[] = [
     trialsReward:     2,
     spiritStones:     12,
     unlockRealmIndex: 2,   // Foundation Establishment
+    drops: [
+      { templateId: 'stoneheart_bead', chance: 0.1 },
+      { templateId: 'woven_guard_charm', chance: 0.1 },
+    ],
   },
   {
     id:               'fire_imp',
@@ -65,6 +82,7 @@ export const MONSTERS: MonsterDef[] = [
     trialsReward:     2,
     spiritStones:     18,
     unlockRealmIndex: 2,
+    drops: [],
   },
   {
     id:               'shadow_stalker',
@@ -77,6 +95,7 @@ export const MONSTERS: MonsterDef[] = [
     trialsReward:     3,
     spiritStones:     25,
     unlockRealmIndex: 3,   // Core Formation
+    drops: [],
   },
   {
     id:               'rock_elemental',
@@ -89,6 +108,7 @@ export const MONSTERS: MonsterDef[] = [
     trialsReward:     3,
     spiritStones:     35,
     unlockRealmIndex: 3,
+    drops: [],
   },
   {
     id:               'wind_spirit',
@@ -101,6 +121,7 @@ export const MONSTERS: MonsterDef[] = [
     trialsReward:     4,
     spiritStones:     45,
     unlockRealmIndex: 4,   // Nascent Soul
+    drops: [],
   },
   {
     id:               'ice_golem',
@@ -113,6 +134,7 @@ export const MONSTERS: MonsterDef[] = [
     trialsReward:     4,
     spiritStones:     60,
     unlockRealmIndex: 4,
+    drops: [],
   },
   {
     id:               'thunder_beast',
@@ -125,6 +147,7 @@ export const MONSTERS: MonsterDef[] = [
     trialsReward:     5,
     spiritStones:     80,
     unlockRealmIndex: 5,   // Spirit Severing
+    drops: [],
   },
   {
     id:               'ancient_guardian',
@@ -137,5 +160,6 @@ export const MONSTERS: MonsterDef[] = [
     trialsReward:     5,
     spiritStones:     120,
     unlockRealmIndex: 5,
+    drops: [],
   },
 ];

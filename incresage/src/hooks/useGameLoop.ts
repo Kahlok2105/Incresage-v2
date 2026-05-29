@@ -4,6 +4,8 @@ import { useBreakthrough } from "./useBreakthrough";
 import { useTechnique } from "./useTechnique";
 import { useCombat } from "./useCombat";
 import { useUpgrades } from "./useUpgrades";
+import { useInventory } from "./useInventory";
+
 
 export function useGameLoop() {
     const {state, setState} = useGameState();
@@ -11,6 +13,7 @@ export function useGameLoop() {
     const technique = useTechnique(setState);
     const combat = useCombat(setState);
     const upgrades = useUpgrades(setState);
+    const inventory = useInventory(setState);
 
     useGameTick(setState);
 
@@ -19,5 +22,6 @@ export function useGameLoop() {
         ...breakthrough,
         ...technique,
         ...combat,
-        ...upgrades
+        ...upgrades,
+        ...inventory,
     }}

@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 import { MONSTERS } from '../constants/monsters';
 import type { PlayerState } from '../types/state';
 import { addCombatLog, getAttackPower, getDefensePower, getSelectedMonster, getVitalityCap } from '../utils/combatUtils';
-
+import { rollMonsterDrops } from '../utils/inventoryUtils';
+import { getItemTemplate } from '../constants/items';
 
 const COMBAT_TICK_MS = 2000;
 
@@ -69,7 +70,12 @@ export function useCombat(
       if (nextMonsterHp <= 0) {
         const alreadyDefeated = previous.combat.defeatedMonsters.includes(monster.id);
         const trialsReward = alreadyDefeated ? 0 : monster.trialsReward;
-        
+        // Handle monster defeat: grant rewards, update state, and log the event
+        const itemDrops = rollMonsterDrops(monster.drops);
+        const dropNames = itemDrops
+                            .map((item) => getItemTemplate(item.templateId)?.name ?? item.templateId)
+                            .join(', ');
+
         return {
           ...previous,
           body:{
@@ -87,14 +93,16 @@ export function useCombat(
                 : [...previous.combat.defeatedMonsters, monster.id],
             combatLog: addCombatLog(
               previous.combat.combatLog,
-              alreadyDefeated
-                  ? `Defeated ${monster.name}. Gained ${monster.spiritStones} spirit stones.`
-                  : `First defeat: ${monster.name}. Gained ${monster.trialsReward} trials and ${monster.spiritStones} spirit stones.`,
-              ),
+              `${alreadyDefeated
+                ? `Defeated ${monster.name}. Gained ${monster.spiritStones} spirit stones.`
+                : `First defeat: ${monster.name}. Gained ${monster.trialsReward} trials and ${monster.spiritStones} spirit stones.`
+              }${itemDrops.length > 0 ? ` Obtained Drops: ${dropNames}.` : ''}`,
+            ),
           },
-          systems:{
+          systems: {
             ...previous.systems,
             spiritStones: previous.systems.spiritStones + monster.spiritStones,
+            inventory: [...previous.systems.inventory, ...itemDrops],
           },
           life:{
             ...previous.life,

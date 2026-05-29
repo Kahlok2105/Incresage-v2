@@ -7,6 +7,7 @@ import { CombatTarget } from "./features/combat/CombatTarget";
 import { PlayerPanel } from "./features/player/PlayerPanel";
 import { CombatLog } from "./features/combat/CombatLog";
 import { BattleTechPanel } from "./features/upgrades/BattleTechPanel";
+import { InventoryPanel } from "./features/player/InventoryPanel";
 
 export default function App(){
   const {
@@ -15,13 +16,20 @@ export default function App(){
     attemptBodyBreakthrough, 
     selectTechnique,
     selectMonster,
-    upgradeBattleTechnique
+    upgradeBattleTechnique,
+    equipItem,
+    unequipItem,
   } = useGameLoop();
 
   return (
   <div className="app">
     <h1>Incresage</h1>
     <PlayerPanel state={state} />
+    <InventoryPanel 
+      state={state} 
+      onEquipItem={equipItem}
+      onUnequipItem={unequipItem}
+    />
     <div className="cultivation-grid">
       <QiPanel
         state={state}
