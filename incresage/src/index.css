@@ -284,20 +284,6 @@ button {
   display: grid;
   gap: 6px;
 }
-
-.inventory-list {
-  display: grid;
-  gap: 8px;
-}
-
-.inventory-item {
-  display: grid;
-  gap: 6px;
-  padding: 12px;
-  border: 1px solid #4b5538;
-  background: #1f2418;
-}
-
 .inventory-item span {
   color: #b6cf6d;
   text-transform: capitalize;
@@ -306,4 +292,56 @@ button {
 .inventory-item small {
   color: #c9c7b5;
   line-height: 1.4;
+}
+
+
+
+.inventory-list {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.inventory-item {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #f0ead6;
+  background: #1f2418;
+}
+
+.inventory-item__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid currentColor;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.inventory-item__content {
+  display: grid;
+  gap: 6px;
+}
+
+.rarity-common {
+  border-color: #f0ead6;
+}
+
+.rarity-exquisite {
+  border-color: #e6c84f;
+}
+
+.rarity-rare {
+  border-color: #4f8cff;
+}
+
+.rarity-epic {
+  border-color: #b56cff;
+}
+
+.rarity-legendary {
+  border-color: #39ff88;
 }

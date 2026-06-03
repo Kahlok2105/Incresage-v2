@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { MONSTERS } from '../constants/monsters';
 import type { PlayerState } from '../types/state';
 import { addCombatLog, getAttackPower, getDefensePower, getSelectedMonster, getVitalityCap } from '../utils/combatUtils';
-import { rollMonsterDrops } from '../utils/inventoryUtils';
+import { addItemsToInventory, rollMonsterDrops } from '../utils/inventoryUtils';
 import { getItemTemplate } from '../constants/items';
 
 const COMBAT_TICK_MS = 2000;
@@ -72,10 +72,18 @@ export function useCombat(
         const trialsReward = alreadyDefeated ? 0 : monster.trialsReward;
         // Handle monster defeat: grant rewards, update state, and log the event
         const itemDrops = rollMonsterDrops(monster.drops);
-        const dropNames = itemDrops
-                            .map((item) => getItemTemplate(item.templateId)?.name ?? item.templateId)
-                            .join(', ');
+        const inventoryResult = addItemsToInventory(
+          previous.systems.inventory,
+          itemDrops,
+        );
 
+        const dropNames = inventoryResult.addedItems
+          .map((item) => getItemTemplate(item.templateId)?.name ?? item.templateId)
+          .join(', ');
+
+        const lostDropNames = inventoryResult.lostItems
+          .map((item) => getItemTemplate(item.templateId)?.name ?? item.templateId)
+          .join(', ');
         return {
           ...previous,
           body:{
@@ -96,13 +104,21 @@ export function useCombat(
               `${alreadyDefeated
                 ? `Defeated ${monster.name}. Gained ${monster.spiritStones} spirit stones.`
                 : `First defeat: ${monster.name}. Gained ${monster.trialsReward} trials and ${monster.spiritStones} spirit stones.`
-              }${itemDrops.length > 0 ? ` Obtained Drops: ${dropNames}.` : ''}`,
+              }${
+                inventoryResult.addedItems.length > 0
+                  ? ` Obtained Drops: ${dropNames}.`
+                  : ''
+              }${
+                inventoryResult.lostItems.length > 0
+                  ? ` Inventory full. Lost Drops: ${lostDropNames}.`
+                  : ''
+              }`,
             ),
           },
           systems: {
             ...previous.systems,
             spiritStones: previous.systems.spiritStones + monster.spiritStones,
-            inventory: [...previous.systems.inventory, ...itemDrops],
+            inventory: inventoryResult.inventory,
           },
           life:{
             ...previous.life,

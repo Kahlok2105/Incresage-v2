@@ -3,6 +3,7 @@ import type { PlayerState } from "../types/state";
 import type { BattleTechnique } from '../types/technique';
 import { getBattleTechniqueBonus } from './upgradeUtils';
 import { getItemTemplate } from "../constants/items";
+import { scaleGearBonus } from "./inventoryUtils";
 
 export function getSelectedMonster (state: PlayerState) {
     if(!state.combat.selectedMonsterId) return null;
@@ -104,16 +105,18 @@ export function getDefensePower(state: PlayerState): number {
     'defense',
   );
 
-  return state.combat.defensePower + gearDefenseBonus +(
+  return state.combat.defensePower + gearDefenseBonus + (
     defenseTechnique ? getBattleTechniqueBonus(defenseTechnique) : 0
   );
 }
 
 // This function calculates the total stat bonuses from equipped gear items
 function getEquippedGearBonuses(state: PlayerState) {
-  
   return state.systems.inventory
     .filter((item) => item.isEquipped)
-    .map((item) => getItemTemplate(item.templateId)?.statBonus)
-    .filter((bonus) => bonus !== undefined);
+    .map((item) => {
+      const template = getItemTemplate(item.templateId);
+
+      return scaleGearBonus(template?.statBonus, item.rarity);
+    });
 }

@@ -5,7 +5,7 @@
 export type ItemRarity = 'common' | 'exquisite' | 'rare' | 'epic' | 'legendary';
 export type ItemType = 'material' | 'pill' | 'gear';
 export type GearSlot = 'weapon' | 'accessory';
-
+export const MAX_INVENTORY_SIZE = 60;
 // The template is the blueprint: one per item type in the game.
 // InventoryItem is an instance of a template the player owns.
 export interface ItemTemplate {
@@ -29,4 +29,5 @@ export interface InventoryItem {
   instanceId:  string;
   quantity:    number;
   isEquipped:  boolean;
+  rarity: ItemRarity;
 }
