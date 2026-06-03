@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { MONSTERS } from '../constants/monsters';
 import type { PlayerState } from '../types/state';
 import { addCombatLog, getAttackPower, getDefensePower, getSelectedMonster, getVitalityCap } from '../utils/combatUtils';
-import { addItemsToInventory, rollMonsterDrops } from '../utils/inventoryUtils';
+import { addItemsToInventory, getSalvageMultiplier, rollMonsterDrops } from '../utils/inventoryUtils';
 import { getItemTemplate } from '../constants/items';
 
 const COMBAT_TICK_MS = 2000;
@@ -77,6 +77,16 @@ export function useCombat(
           itemDrops,
         );
 
+        const salvageStones = inventoryResult.lostItems.reduce(
+          (total, item) => 
+            total + Math.ceil(monster.spiritStones * getSalvageMultiplier(item.rarity)),
+          0,
+        )
+
+        const salvagedDropNames = inventoryResult.lostItems
+          .map((item) => getItemTemplate(item.templateId)?.name ?? item.templateId)
+          .join(', ');
+
         const dropNames = inventoryResult.addedItems
           .map((item) => getItemTemplate(item.templateId)?.name ?? item.templateId)
           .join(', ');
@@ -110,14 +120,14 @@ export function useCombat(
                   : ''
               }${
                 inventoryResult.lostItems.length > 0
-                  ? ` Inventory full. Lost Drops: ${lostDropNames}.`
+                  ? ` Inventory full. Salvaged Drops: ${salvagedDropNames} for ${salvageStones} spirit stones.`
                   : ''
               }`,
             ),
           },
           systems: {
             ...previous.systems,
-            spiritStones: previous.systems.spiritStones + monster.spiritStones,
+            spiritStones: previous.systems.spiritStones + monster.spiritStones + salvageStones,
             inventory: inventoryResult.inventory,
           },
           life:{

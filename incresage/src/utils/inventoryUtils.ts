@@ -123,3 +123,18 @@ export function addItemsToInventory(
     lostItems,
   };
 }
+
+export function getSalvageMultiplier(rarity: ItemRarity): number{
+    switch (rarity){
+    case 'common':
+        return 1.1;
+        case 'exquisite':
+        return 1.5;
+        case 'rare':
+        return 2;   
+        case 'epic':
+        return 3;
+        case 'legendary':
+        return 5;
+    }
+}
