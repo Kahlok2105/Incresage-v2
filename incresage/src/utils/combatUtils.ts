@@ -66,6 +66,7 @@ export function addCombatLog(
   currentLog: CombatLogEntry[],
   message: string,
   drops: CombatLogDrop[] = [],
+  salvagedDrops: CombatLogDrop[] = [],
   maxEntries = 50,
 ): CombatLogEntry[] {
   const newEntry: CombatLogEntry = {
@@ -73,6 +74,7 @@ export function addCombatLog(
     timestamp: formatLogTime(new Date()),
     message,
     drops,
+    salvagedDrops,
   };
 
   return [newEntry, ...currentLog].slice(0, maxEntries);

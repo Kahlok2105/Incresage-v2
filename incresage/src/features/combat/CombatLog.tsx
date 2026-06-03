@@ -33,6 +33,22 @@ export function CombatLog({ state }: CombatLogProps) {
                 <span>.</span>
               </>
             )}
+            {entry.salvagedDrops && entry.salvagedDrops.length > 0 && (
+              <>
+                {' '}
+                <span>Salvaged: </span>
+                {entry.salvagedDrops.map((drop, index) => (
+                  <span
+                    key={`${drop.name}-${index}`}
+                    className={`rarity-text-${drop.rarity}`}
+                  >
+                    {drop.name}
+                    {index < entry.salvagedDrops!.length - 1 ? ', ' : ''}
+                  </span>
+                ))}
+                <span>.</span>
+              </>
+            )}
           </p>
         ))}
         </div>

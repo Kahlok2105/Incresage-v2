@@ -82,16 +82,16 @@ export function useCombat(
           rarity: item.rarity,
         }));
 
+        const salvagedDropLogEntries = inventoryResult.lostItems.map((item) => ({
+          name: getItemTemplate(item.templateId)?.name ?? item.templateId,
+          rarity: item.rarity,
+        }));
+
         const salvageStones = inventoryResult.lostItems.reduce(
           (total, item) => 
             total + Math.ceil(monster.spiritStones * getSalvageMultiplier(item.rarity)),
           0,
         )
-
-        const salvagedDropNames = inventoryResult.lostItems
-          .map((item) => getItemTemplate(item.templateId)?.name ?? item.templateId)
-          .join(', ');
-          
         return {
           ...previous,
           body:{
@@ -114,10 +114,11 @@ export function useCombat(
                 : `First defeat: ${monster.name}. Gained ${monster.trialsReward} trials and ${monster.spiritStones} spirit stones.`
               }${
                 inventoryResult.lostItems.length > 0
-                  ? ` Inventory full. Salvaged Drops: ${salvagedDropNames} for ${salvageStones} spirit stones.`
+                  ? ` Inventory full. Salvaged for ${salvageStones} spirit stones.`
                   : ''
               }`,
               addedDropLogEntries,
+              salvagedDropLogEntries,
             ),
           },
           systems: {

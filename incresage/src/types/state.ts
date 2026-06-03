@@ -49,6 +49,7 @@ export interface CombatLogEntry {
   timestamp: string;
   message: string;
   drops?: CombatLogDrop[];
+  salvagedDrops?: CombatLogDrop[];
 }
 
 export interface CombatLogDrop {
