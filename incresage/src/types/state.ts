@@ -1,8 +1,7 @@
-import type { InventoryItem } from './inventory';
+import type { InventoryItem, ItemRarity } from './inventory';
 import type { Imprint, LifetimeStats, ReincarnationSummary } from './legacy';
 import type { Technique } from './technique';
 import type { BattleTechnique } from './technique';
-
 // States are split into multiple sub-objects so each hook owns a clean slice.
 
 export interface PlayerState {
@@ -42,7 +41,19 @@ export interface CombatStats {
   equippedItems:    string[];
   selectedMonsterId: string | null;
   monsterHp: number;
-  combatLog: string[];
+  combatLog: CombatLogEntry[];
+}
+
+export interface CombatLogEntry {
+  id: string;
+  timestamp: string;
+  message: string;
+  drops?: CombatLogDrop[];
+}
+
+export interface CombatLogDrop {
+  name: string;
+  rarity: ItemRarity;
 }
 
 export interface LifeState {

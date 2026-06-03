@@ -1,9 +1,9 @@
 import { MONSTERS } from "../constants/monsters";
-import type { PlayerState } from "../types/state";
 import type { BattleTechnique } from '../types/technique';
 import { getBattleTechniqueBonus } from './upgradeUtils';
 import { getItemTemplate } from "../constants/items";
 import { scaleGearBonus } from "./inventoryUtils";
+import type { CombatLogDrop, CombatLogEntry, PlayerState } from "../types/state";
 
 export function getSelectedMonster (state: PlayerState) {
     if(!state.combat.selectedMonsterId) return null;
@@ -63,11 +63,19 @@ function formatLogTime(date: Date): string {
 }
 
 export function addCombatLog(
-  currentLog: string[],
+  currentLog: CombatLogEntry[],
   message: string,
+  drops: CombatLogDrop[] = [],
   maxEntries = 50,
-): string[] {
-  return [`[${formatLogTime(new Date())}] ${message}`, ...currentLog].slice(0, maxEntries);
+): CombatLogEntry[] {
+  const newEntry: CombatLogEntry = {
+    id: crypto.randomUUID(),
+    timestamp: formatLogTime(new Date()),
+    message,
+    drops,
+  };
+
+  return [newEntry, ...currentLog].slice(0, maxEntries);
 }
 
 function getBattleTechniqueByTrait(

@@ -345,3 +345,27 @@ button {
 .rarity-legendary {
   border-color: #39ff88;
 }
+
+.combat-log__time {
+  color: #8c8a7c;
+}
+
+.rarity-text-common {
+  color: #f0ead6;
+}
+
+.rarity-text-exquisite {
+  color: #e6c84f;
+}
+
+.rarity-text-rare {
+  color: #4f8cff;
+}
+
+.rarity-text-epic {
+  color: #b56cff;
+}
+
+.rarity-text-legendary {
+  color: #39ff88;
+}

@@ -13,9 +13,28 @@ export function CombatLog({ state }: CombatLogProps) {
         <p>No combat events yet.</p>
       ) : (
         <div className="combat-log">
-            {state.combat.combatLog.map((entry, index) => (
-                <p key={`${entry}-${index}`}>{entry}</p>
-            ))}
+           {state.combat.combatLog.map((entry) => (
+  <p key={entry.id}>
+    <span className="combat-log__time">[{entry.timestamp}]</span>{' '}
+            <span>{entry.message}</span>
+            {entry.drops && entry.drops.length > 0 && (
+              <>
+                {' '}
+                <span>Drops: </span>
+                {entry.drops.map((drop, index) => (
+                  <span
+                    key={`${drop.name}-${index}`}
+                    className={`rarity-text-${drop.rarity}`}
+                  >
+                    {drop.name}
+                    {index < entry.drops!.length - 1 ? ', ' : ''}
+                  </span>
+                ))}
+                <span>.</span>
+              </>
+            )}
+          </p>
+        ))}
         </div>
       )}
     </section>
