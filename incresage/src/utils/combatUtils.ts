@@ -62,6 +62,8 @@ function formatLogTime(date: Date): string {
   });
 }
 
+//Adds a new entry to the combat log
+//When the same message occurs consecutively, count is incremented and timestamp is updated, instead of adding a new entry.
 export function addCombatLog(
   currentLog: CombatLogEntry[],
   message: string,
@@ -69,15 +71,37 @@ export function addCombatLog(
   salvagedDrops: CombatLogDrop[] = [],
   maxEntries = 50,
 ): CombatLogEntry[] {
-  const newEntry: CombatLogEntry = {
+  const timestamp = formatLogTime(new Date());
+  const latestEntry = currentLog[0];
+  const hasDrops = drops.length > 0 || salvagedDrops.length > 0;
+
+  if (
+    latestEntry &&
+    latestEntry.message === message &&
+    !hasDrops &&
+    (!latestEntry.drops || latestEntry.drops.length === 0) &&
+    (!latestEntry.salvagedDrops || latestEntry.salvagedDrops.length === 0)
+  ) {
+    return [
+      {
+        ...latestEntry,
+        timestamp,
+        count: latestEntry.count + 1,
+      },
+      ...currentLog.slice(1),
+    ];
+  }
+
+  const entry: CombatLogEntry = {
     id: crypto.randomUUID(),
-    timestamp: formatLogTime(new Date()),
+    timestamp,
     message,
+    count: 1,
     drops,
     salvagedDrops,
   };
 
-  return [newEntry, ...currentLog].slice(0, maxEntries);
+  return [entry, ...currentLog].slice(0, maxEntries);
 }
 
 function getBattleTechniqueByTrait(

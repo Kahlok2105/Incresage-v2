@@ -1,4 +1,4 @@
-import type { PlayerState } from '../../types/state';
+import type { CombatLogDrop, PlayerState } from '../../types/state';
 
 interface CombatLogProps {
   state: PlayerState;
@@ -17,42 +17,47 @@ export function CombatLog({ state }: CombatLogProps) {
   <p key={entry.id}>
     <span className="combat-log__time">[{entry.timestamp}]</span>{' '}
             <span>{entry.message}</span>
-            {entry.drops && entry.drops.length > 0 && (
+            {entry.count > 1 && (
               <>
                 {' '}
-                <span>Drops: </span>
-                {entry.drops.map((drop, index) => (
-                  <span
-                    key={`${drop.name}-${index}`}
-                    className={`rarity-text-${drop.rarity}`}
-                  >
-                    {drop.name}
-                    {index < entry.drops!.length - 1 ? ', ' : ''}
-                  </span>
-                ))}
-                <span>.</span>
+                <span className="combat-log__count">({entry.count})</span>
               </>
             )}
-            {entry.salvagedDrops && entry.salvagedDrops.length > 0 && (
-              <>
-                {' '}
-                <span>Salvaged: </span>
-                {entry.salvagedDrops.map((drop, index) => (
-                  <span
-                    key={`${drop.name}-${index}`}
-                    className={`rarity-text-${drop.rarity}`}
-                  >
-                    {drop.name}
-                    {index < entry.salvagedDrops!.length - 1 ? ', ' : ''}
-                  </span>
-                ))}
-                <span>.</span>
-              </>
-            )}
+            <LogDrops label="Drops" drops={entry.drops} />
+            <LogDrops label="Salvaged" drops={entry.salvagedDrops} />
           </p>
         ))}
         </div>
       )}
     </section>
+  );
+}
+
+
+interface LogDropsProps {
+  label: string;
+  drops?: CombatLogDrop[];
+}
+
+function LogDrops({ label, drops }: LogDropsProps) {
+  if (!drops || drops.length === 0) {
+    return null;
+  }
+
+  return (
+    <>
+      {' '}
+      <span>{label}: </span>
+      {drops.map((drop, index) => (
+        <span
+          key={`${drop.name}-${index}`}
+          className={`rarity-text-${drop.rarity}`}
+        >
+          {drop.name}
+          {index < drops.length - 1 ? ', ' : ''}
+        </span>
+      ))}
+      <span>.</span>
+    </>
   );
 }

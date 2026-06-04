@@ -19,6 +19,7 @@ export default function App(){
     upgradeBattleTechnique,
     equipItem,
     unequipItem,
+    deleteItem,
   } = useGameLoop();
 
   return (
@@ -29,6 +30,7 @@ export default function App(){
       state={state} 
       onEquipItem={equipItem}
       onUnequipItem={unequipItem}
+      onDeleteItem={deleteItem}
     />
     <div className="cultivation-grid">
       <QiPanel

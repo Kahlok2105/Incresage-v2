@@ -48,6 +48,7 @@ export interface CombatLogEntry {
   id: string;
   timestamp: string;
   message: string;
+  count: number;
   drops?: CombatLogDrop[];
   salvagedDrops?: CombatLogDrop[];
 }

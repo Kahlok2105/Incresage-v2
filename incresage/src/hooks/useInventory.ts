@@ -87,9 +87,31 @@ export function useInventory(
     });
   }
 
+        function deleteItem(instanceId: string) {
+        setState((previous) => {
+          const nextInventory = previous.systems.inventory.filter(
+            (item) => item.instanceId !== instanceId,
+          );
+
+          return {
+            ...previous,
+            combat: {
+              ...previous.combat,
+              equippedItems: getEquippedItemIds(nextInventory),
+            },
+            systems: {
+              ...previous.systems,
+              inventory: nextInventory,
+            },
+          };
+        });
+      }
+
+      
   return {
     equipItem,
     unequipItem,
+    deleteItem,
   };
 }
 

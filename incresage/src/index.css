@@ -369,3 +369,47 @@ button {
 .rarity-text-legendary {
   color: #39ff88;
 }
+
+.inventory-item__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.inventory-item__actions button {
+  width: fit-content;
+  padding: 6px 10px;
+  border: 1px solid #6f7c4d;
+  background: #2b321f;
+  color: #f0ead6;
+  cursor: pointer;
+}
+
+.inventory-item__actions button:hover {
+  background: #384126;
+}
+
+.inventory-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.inventory-controls label {
+  display: grid;
+  gap: 4px;
+  color: #c9c7b5;
+  font-size: 13px;
+}
+
+.inventory-controls select {
+  padding: 6px 8px;
+  border: 1px solid #6f7c4d;
+  background: #1f2418;
+  color: #f0ead6;
+}
+
+.combat-log__count {
+  color: #b6cf6d;
+  font-weight: 700;
+}
