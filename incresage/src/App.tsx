@@ -8,6 +8,7 @@ import { PlayerPanel } from "./features/player/PlayerPanel";
 import { CombatLog } from "./features/combat/CombatLog";
 import { BattleTechPanel } from "./features/upgrades/BattleTechPanel";
 import { InventoryPanel } from "./features/player/InventoryPanel";
+import { EquipmentPanel } from "./features/player/EquipmentPanel";
 
 export default function App(){
   const {
@@ -26,11 +27,16 @@ export default function App(){
   <div className="app">
     <h1>Incresage</h1>
     <PlayerPanel state={state} />
+    
     <InventoryPanel 
       state={state} 
       onEquipItem={equipItem}
       onUnequipItem={unequipItem}
       onDeleteItem={deleteItem}
+    />
+    <EquipmentPanel 
+      state={state} 
+      onUnequipItem={unequipItem}
     />
     <div className="cultivation-grid">
       <QiPanel

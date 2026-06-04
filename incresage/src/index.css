@@ -413,3 +413,41 @@ button {
   color: #b6cf6d;
   font-weight: 700;
 }
+
+.equipment-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.equipment-slot {
+  display: grid;
+  gap: 8px;
+  min-height: 140px;
+  padding: 14px;
+  border: 1px solid #4b5538;
+  background: #1f2418;
+}
+
+.equipment-slot__label {
+  color: #b6cf6d;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.equipment-slot span {
+  text-transform: capitalize;
+}
+
+.equipment-slot small {
+  color: #c9c7b5;
+}
+
+.equipment-slot button {
+  width: fit-content;
+  padding: 6px 10px;
+  border: 1px solid #6f7c4d;
+  background: #2b321f;
+  color: #f0ead6;
+  cursor: pointer;
+}

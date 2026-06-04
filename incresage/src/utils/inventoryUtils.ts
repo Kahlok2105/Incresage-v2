@@ -1,4 +1,4 @@
-import type { InventoryItem, ItemRarity, GearBonus } from '../types/inventory';
+import type { InventoryItem, ItemRarity, GearBonus, GearSlot } from '../types/inventory';
 import type {MonsterDrop} from '../constants/monsters';
 import { getItemTemplate } from '../constants/items';
 import { MAX_INVENTORY_SIZE } from '../types/inventory';
@@ -137,4 +137,21 @@ export function getSalvageMultiplier(rarity: ItemRarity): number{
         case 'legendary':
         return 5;
     }
+}
+
+//To get the equipped item by which slot it is in
+
+export function getEquippedItemBySlot(
+  inventory: InventoryItem[],
+  slot: GearSlot,
+): InventoryItem | null{
+  return inventory.find((item) => {
+    if(!item.isEquipped){
+        return false;
+    }
+    
+    const template = getItemTemplate(item.templateId);
+  
+    return template?.slot === slot;
+  }) ?? null;
 }
