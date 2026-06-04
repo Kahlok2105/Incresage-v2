@@ -46,16 +46,13 @@ function loadSavedState(): PlayerState {
 }
 
 export function useGameState() {
-
-    // We are retiring this as it loads and renders the game evry tick. 
-    // const [state, setState] = useState<PlayerState>(loadSavedState());
-    
-   // New loading method that only loads once on initial render, and then saves on every state change.
    // Laze Initializer where the function is only called once to set the initial state, preventing unnecessary parsing on every render.
     const [state, setState] = useState<PlayerState>(() => loadSavedState());
 
     useEffect(() => {
-        localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+        if (!state.legacy.pendingSummary) {
+            localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+        }
     }, [state]);
 
     return { 

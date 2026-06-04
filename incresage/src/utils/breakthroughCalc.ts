@@ -23,8 +23,8 @@ export function getBodyTrialCost(state: PlayerState): number {
 export function canAttemptBodyBreakthrough(state: PlayerState): boolean{
     return(
         state.body.fill >= MIN_BREAKTHROUGH_FILL &&
-        state.body.sparks >= getBodyTrialCost(state) && 
-        state.body.sparks > 1 &&
+        state.body.trials >= getBodyTrialCost(state) &&
+        state.body.sparks >= getBodyTrialCost(state) &&
         !isFinalBodyStage(state.body)
     )
 }

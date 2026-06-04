@@ -15,6 +15,7 @@ interface BodyPanelProps {
 export function BodyPanel({ state, onAttemptBreakthrough }: BodyPanelProps) {
   const chance = Math.round(computeBodyBreakthroughChance(state) * 100);
   const trialCost = getBodyTrialCost(state);
+  const hasEnoughTrials = state.body.trials >= trialCost;
   const canAttempt = canAttemptBodyBreakthrough(state);
   const buttonLabel = canAttempt ? 'Attempt Body Breakthrough' : 'Needs Body Fill, Trials, and Spark';
 
@@ -29,7 +30,7 @@ export function BodyPanel({ state, onAttemptBreakthrough }: BodyPanelProps) {
       <FillBar value={state.body.fill} />
 
       <p>Breakthrough chance: {chance}%</p>
-      <p>Trials: {state.body.trials} / {trialCost}</p>
+      <p>Trials Required: {trialCost} {hasEnoughTrials ? '✅' : `(have ${state.body.trials})`}</p>
       <p>Body Sparks: {state.body.sparks}</p>
     
 

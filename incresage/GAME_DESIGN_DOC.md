@@ -398,36 +398,103 @@ currentSpirit = round(spiritFill * spiritCap)
 
 Lifespan is the timer on each life. When lifespan runs out, the player dies and can reincarnate.
 
-- `maxLifespan` is determined by the current Qi realm stage's `lifespanYears`
-- `lifespanFill` tracks how much of the max lifespan has been consumed (0.0–1.0)
-- When `lifespanFill >= 1.0`, the current life ends (feature TBD in UI — reincarnation currently stubbed)
+- `maxLifespan` is calculated from a real-time table (`LIFESPAN_TABLE`) that maps each Qi realm stage to seconds
+- `lifespanFill` increments every game tick (1s) based on drain rate
+- When `lifespanFill >= 1.0`, a `ReincarnationSummary` is computed and stored as `pendingSummary`
+- A modal overlay displays the summary and the player can click "Reincarnate" to restart
 
-**Lifespan values per Qi Realm Stage:**
+**Lifespan values per Qi Realm Stage (real-time):**
 
 | Realm | Early | Middle | Late |
 |---|---|---|---|
-| Mortal | 80 | 90 | 100 |
-| Qi Condensation | 150 | 200 | 250 |
-| Foundation Establishment | 300 | 400 | 500 |
-| Core Formation | 750 | 1000 | 1200 |
-| Nascent Soul | 2000 | 3500 | 5000 |
-| Spirit Severing | 10000 | 12000 | 15000 |
+| Mortal | 10 min | 12 min | 15 min |
+| Qi Condensation | 20 min | 25 min | 30 min |
+| Foundation Establishment | 40 min | 50 min | 1 hr |
+| Core Formation | 1.5 hr | 2 hr | 2.5 hr |
+| Nascent Soul | 3 hr | 4 hr | 5 hr |
+| Spirit Severing | 6 hr | 8 hr | 10 hr |
 
-### 3.8 Legacy & Reincarnation (Future / Stub)
-
-**Echo Shop Perks:**
-```typescript
-interface EchoShopPerk {
-  id: string;
-  name: string;
-  description: string;
-  cost: number;       // Echoes cost
-  maxPurchases: number;
-}
+**Lifespan Drain Formula:**
 ```
-- Echoes are earned on reincarnation
-- Used to purchase permanent upgrades across lives
-- Imprints preserve technique levels into the next life
+drain = 1 / maxLifespanSeconds
+```
+If the active technique has `lifespan_extend` trait:
+```
+drain *= 1 / (1 + activeTechnique.level * 0.02)
+```
+This reduces drain by 2% per level, effectively extending lifespan proportionally.
+
+### 3.8 Legacy & Reincarnation
+
+Reincarnation creates a summary of the player's life achievements, awards Echoes and Imprints, then resets the game state.
+
+**Echoes Formula:**
+```
+echoesEarned = floor(
+  highestQiRealm * 10 +
+  highestBodyRealm * 5 +
+  breakthroughsTaken * 2 +
+  monstersDefeated / 10
+)
+```
+
+**Imprint Formula:**
+Each technique at level 10+ preserves 30% of its levels (rounded down, minimum 1):
+```
+preservedLevel = floor(technique.level * 0.3)
+```
+
+**Rebirth State:**
+- Resets to `INITIAL_PLAYER_STATE`
+- Preserves `legacy.echoes` (adds echoesEarned)
+- Preserves `legacy.reincarnationCount` (increments)
+- Applies `Imprint` levels to techniques (starts at level 1 + imprint level)
+- Applies Echo Shop perk bonuses (starting Sparks, extra preserved levels)
+
+**Echo Shop:**
+Two perks available in v1:
+1. **Soul Anchor** (5 echoes, max 10 purchases) — Preserved techniques gain +1 additional level on rebirth
+2. **Spark of Genesis** (3 echoes, max 5 purchases) — Start each life with +1 Body Spark
+
+Perk purchases are tracked via special `Imprint` entries with `techniqueId: "perk_<id>"`.
+
+### 3.9 Feature Unlock Gating
+
+Features are unlocked progressively as the player advances:
+
+| Feature | Unlock Condition |
+|---|---|
+| `combat` | Reach Qi Condensation (realmIndex >= 1) |
+| `bodyCultivation` | Reach Qi Condensation (realmIndex >= 1) |
+| `alchemy` | Reach Core Formation (realmIndex >= 3) — future |
+
+Unlocked features are tracked in `systems.unlockedFeatures` and UI components render conditionally based on `isFeatureUnlocked()`. A notification is shown when a new feature is unlocked.
+
+### 3.10 Offline Progress
+
+On game load, elapsed time since `lastUpdate` is computed and offline ticks are applied:
+
+- Qi fill (capped at 1.0)
+- Technique XP for the active technique
+- Insight gain (capped at realm cap)
+- Lifespan drain (can trigger death during offline)
+
+**Offline Cap:** 8 hours (28,800 ticks) to prevent exploits.
+Combat does NOT advance offline.
+
+A notification summarizes offline gains: "Offline progress (45m): Qi fill +12.3%, Stillwater Breathing +2 levels"
+
+### 3.11 Notification System
+
+A lightweight notification system provides feedback for game events:
+
+- Queue of up to 10 notifications
+- Auto-dismiss after 5 seconds
+- Four types: `info`, `success`, `warning`, `death`
+- Positioned fixed top-right with slide-in animation
+- Clickable to dismiss manually
+
+Used for: offline progress summaries, feature unlocks, echo shop purchases, death events, reincarnation results.
 
 ---
 
